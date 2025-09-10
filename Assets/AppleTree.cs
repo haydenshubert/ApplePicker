@@ -23,12 +23,32 @@ public class AppleTree : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        // Start dropping apples
     }
 
     // Update is called once per frame
     void Update()
     {
+        // Basic Movement
+        Vector3 pos = transform.position;
+        pos.x += speed * Time.deltaTime;
+        transform.position = pos;
 
+        // Changing Direction       // Negative speed to the left, positive speed to the right
+        if (pos.x < -leftAndRightEdge) {
+            speed = Mathf.Abs(speed);   // Move right
+        } else if (pos.x > leftAndRightEdge) {
+            speed = -Mathf.Abs(speed);  // Move left
+        // } else if (Random.value < changeDirChance) {
+        //      speed *= -1;    // Change direction
+        }
+    }
+
+    void FixedUpdate()
+    {
+        // Random direction chages are now time-based due to FixedUpdate()
+        if (Random.value < changeDirChance) {
+            speed *= -1;    // Change direction
+        }
     }
 }
