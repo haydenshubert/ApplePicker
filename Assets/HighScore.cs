@@ -13,6 +13,14 @@ public class HighScore : MonoBehaviour
     void Awake()
     {
         _UI_TEXT = GetComponent<Text>();
+
+        // If the PlayerPrefs HighScore already exists, read it
+        if (PlayerPrefs.HasKey("HighScore"))
+        {
+            SCORE = PlayerPrefs.GetInt("HighScore");
+        }
+        // Assigne the high score ot HighScore
+        PlayerPrefs.SetInt("HighScore", SCORE);
     }
 
     static public int SCORE
@@ -21,6 +29,7 @@ public class HighScore : MonoBehaviour
         private set
         {
             _SCORE = value;
+            PlayerPrefs.SetInt("HighScore", value);
             if (_UI_TEXT != null)
             {
                 _UI_TEXT.text = "High Score: " + value.ToString("#,0");
@@ -31,6 +40,20 @@ public class HighScore : MonoBehaviour
     static public void TRY_SET_HIGH_SCORE(int scoreToTry)
     {
         if (scoreToTry <= SCORE) return;    // If scoreToTry is too low, return
-        SCORE = scoreToTry; 
+        SCORE = scoreToTry;
+    }
+
+    // The following code allows you to easily reset the PlayerPrefs HighScore
+    [Tooltip("Check this box to reset the HighScore in PlayerPrefs")]
+    public bool resetHighScoreNow = false;
+
+    void OnDrawGizmos()
+    {
+        if (resetHighScoreNow)
+        {
+            resetHighScoreNow = false;
+            PlayerPrefs.SetInt("HighScore", 1000);
+            Debug.LogWarning("PlayerPrefs HighScore reset to 1,000");
+        }
     }
 }
