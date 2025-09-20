@@ -6,15 +6,21 @@ using UnityEngine.SceneManagement;
 
 public class ApplePicker : MonoBehaviour
 {
+    public GameRound roundCounter;
+
     [Header("Inscribed")]
     public GameObject basketPrefab;
-    public int numBaskets = 3;
+    public int numBaskets = 4;
     public float basketBottomY = -14f;
     public float basketSpacingY = 2f;
     public List<GameObject> basketList;
 
     void Start()
     {
+        // Added for game round
+        GameObject roundGO = GameObject.Find("GameRound");
+        roundCounter = roundGO.GetComponent<GameRound>();
+
         basketList = new List<GameObject>();
         for (int i = 0; i < numBaskets; i++)
         {
@@ -43,11 +49,17 @@ public class ApplePicker : MonoBehaviour
         // Remove the Basket from the lsit and destroy the GameObject
         basketList.RemoveAt(basketIndex);
         Destroy(basketGO);
+        roundCounter.round += 1;
 
         // If there are no Baskets left, restart the game
         if (basketList.Count == 0)
         {
-            SceneManager.LoadScene("_Scene_0");
+            SceneManager.LoadScene(2);
         }
+    }
+
+    public void LogHit()
+    {
+        SceneManager.LoadScene(2);
     }
 }

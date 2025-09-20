@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Basket : MonoBehaviour
 {
@@ -38,6 +39,13 @@ public class Basket : MonoBehaviour
     {
         // Find out what hit this basket
         GameObject collidedWith = coll.gameObject;
+        
+        if (collidedWith.CompareTag("Log"))
+        {
+            Destroy(collidedWith);
+            // HighScore.TRY_SET_HIGH_SCORE(scoreCounter.score);
+            SceneManager.LoadScene(2);
+        }
         if (collidedWith.CompareTag("Apple"))
         {
             Destroy(collidedWith);
@@ -45,5 +53,6 @@ public class Basket : MonoBehaviour
             scoreCounter.score += 100;
             HighScore.TRY_SET_HIGH_SCORE(scoreCounter.score);
         }
+
     }
 }
